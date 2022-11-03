@@ -8,10 +8,11 @@ Here's the definition of binary trees:
 class Tree {}
 class Leaf extends Tree {}
 class Branch extends Tree { constructor(left,right) {} }
-And here are the functions you need to define:
 ```
-function ` treeToParens(Tree) => String `
-function ` parensToTree(String) => Tree `
+
+And here are the functions you need to define:
+`function treeToParens(Tree) => String `
+`function parensToTree(String) => Tree `
 The first function needs to return only strings of valid balanced parentheses `(like "()(())")`.
 The second needs to accept any string of **balanced parentheses**.
 
