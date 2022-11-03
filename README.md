@@ -11,18 +11,20 @@ class Branch extends Tree { constructor(left,right) {} }
 ```
 
 And here are the functions you need to define:
-`function treeToParens(Tree) => String `
-`function parensToTree(String) => Tree `
+```
+function treeToParens(Tree) => String 
+function parensToTree(String) => Tree 
+```
+
 The first function needs to return only strings of valid balanced parentheses `(like "()(())")`.
 The second needs to accept any string of **balanced parentheses**.
 
 Also, the functions need to be **inverses** of each other.
 In other words, they need to satisfy the following equations:
-
-`treeToParens(parensToTree(parens)) === parens` 
-
-`parensToTree(treeToParens(tree)) === tree`
-
+```
+treeToParens(parensToTree(parens)) === parens
+parensToTree(treeToParens(tree)) === tree
+```
 
 > Note: \
     \
