@@ -29,6 +29,4 @@ parensToTree(treeToParens(tree)) === tree
 > Note: \
     \
     There is more than one possible answer to this puzzle! There are number of different ways to "encode" a tree as a string of parentheses. Any solution that follows the laws above will be accepted. \
-    \
-    Your functions will run in sandboxes; only Tree, Leaf, Branch and console ( for .log ) will be in scope, and they will be frozen. If you need helper functions, define them inside your functions. If you experience any problems with this setup, please leave a comment in the Discourse.
-
+   
