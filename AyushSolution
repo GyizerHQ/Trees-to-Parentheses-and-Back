@@ -1,0 +1,25 @@
+function treeToParens(tree) {
+  if (tree instanceof Leaf) {
+    return "";
+  }
+  const branch = tree;
+  return "(" + treeToParens(branch.left) + treeToParens(branch.right) + ")";
+}
+
+function parensToTree(parens) {
+  let balance = 0;
+  for (let i = 0; i < parens.length; i++) {
+    if (parens[i] === "(") {
+      balance++;
+    } else if (parens[i] === ")") {
+      balance--;
+      if (balance === 0) {
+        return new Branch(
+          parensToTree(parens.substring(1, i)),
+          parensToTree(parens.substring(i + 1, parens.length - 1))
+        );
+      }
+    }
+  }
+  return new Leaf();
+}
