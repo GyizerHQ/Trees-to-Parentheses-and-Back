@@ -1,0 +1,93 @@
+package com.collection;
+import java.util.*;   
+public class Balanced {
+	 public static void main(String[] args)   
+	    { 
+		 System.out.println("Valid Strings are:");
+		 int n = 3;
+	        char[] str = new char[2 * n];
+	        printParenthesis(str, n);
+	        	
+	        String inputStr;   
+	        
+	        Scanner sc = new Scanner(System.in);   
+	          
+	        System.out.println("Enter input string to check:");   
+	        
+	        inputStr = sc.nextLine();   
+	          
+	        // call balancedParenthesis() method to check whether input string is balanced of not   
+	        if (parensToTree(inputStr))   
+	            System.out.println("Input string "+inputStr+" is balanced.");   
+	        else   
+	            System.out.println("Input string "+inputStr+" is not balanced.");   
+		 
+	    }
+	 static void printParenthesis(char str[], int n)
+	    {
+	        if (n > 0)
+	        	treeToParens(str, 0, n, 0, 0);
+	        return;
+	    }
+	 
+	 static void treeToParens(char str[], int pos, int n, int open, int close)
+	 		{
+			if (close == n) {
+			    // return only valid balanced parentheses 
+				
+			for (int i = 0; i < str.length; i++)
+			System.out.print(str[i]);
+			
+			System.out.println();
+			return;
+			}
+			
+			else {
+			if (open > close) 
+			{
+			str[pos] = ')';
+			
+			treeToParens(str, pos + 1, n, open, close + 1);
+			}
+			
+			if (open < n) {
+			str[pos] = '(';
+			treeToParens(str, pos + 1, n, open + 1, close);
+			}
+			}
+	 	}
+	 		
+	 public static boolean parensToTree(String inputStr) {   
+		  Stack stack = new Stack();   // create an empty stack   
+		  char[] charArray = inputStr.toCharArray();   // convert String to char array   
+		  
+		  // iterate charArray   
+		  for (int i = 0; i < charArray.length; i++) {  
+			 
+			  char current = charArray[i];  
+			 
+			  //PUSH
+			  if (current == '(') {   
+	                // push current to stack   
+	                stack.push(current);   
+	                continue;   
+	            } 
+			  if (stack.isEmpty()) {    
+	                return false;  
+		  }
+			  
+			  //POP
+			  char popChar; 
+			  
+	            if (current==')') {   
+	                  
+	                popChar = (char) stack.pop();   
+	               
+	                break;   
+	            
+	            }   
+	        }   
+	        return (stack.isEmpty());   
+	    }   
+	        
+}
