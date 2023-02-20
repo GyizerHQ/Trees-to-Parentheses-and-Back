@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <stack>
+
+class Tree {
+public:
+    virtual ~Tree() {}
+};
+
+class Leaf : public Tree {
+};
+
+class Branch : public Tree {
+public:
+    Branch(Tree* l, Tree* r) : left(l), right(r) {}
+    ~Branch() { delete left; delete right; }
+    Tree* left;
+    Tree* right;
+};
+
+std::string treeToParens(Tree* t) {
+    std::string result;
+    if (dynamic_cast<Leaf*>(t)) {
+        result = "()";
+    } else {
+        result = "(" + treeToParens(static_cast<Branch*>(t)->left) + 
+                 ")" + treeToParens(static_cast<Branch*>(t)->right);
+    }
+    return result;
+}
+
+Tree* parensToTree(const std::string& s) {
+    std::stack<Tree*> st;
+    for (char c : s) {
+        if (c == '(') {
+            st.push(nullptr);
+        } else if (c == ')') {
+            Tree* right = st.top();
+            st.pop();
+            Tree* left = st.top();
+            st.pop();
+            st.top() = new Branch(left, right);
+        }
+    }
+    return st.top();
+}
+
+int main() {
+    Tree* t1 = new Leaf();
+    Tree* t2 = new Branch(new Leaf(), new Leaf());
+    Tree* t3 = new Branch(new Leaf(), new Branch(new Leaf(), new Leaf()));
+    std::cout << treeToParens(t1) << '\n';  // "()"
+    std::cout << treeToParens(t2) << '\n';  // "()()"
+    std::cout << treeToParens(t3) << '\n';  // "()(())"
+    Tree* t4 = parensToTree("()");
+    Tree* t5 = parensToTree("()()");
+    Tree* t6 = parensToTree("()(())");
+    std::cout << (treeToParens(t4) == "()") << '\n';  // true
+    std::cout << (treeToParens(t5) == "()()") << '\n';  // true
+    std::cout << (treeToParens(t6) == "()(())") << '\n';  // true
+    delete t1;
+    delete t2;
+    delete t3;
+    delete t4;
+    delete t5;
+    delete t6;
+    return 0;
+}
