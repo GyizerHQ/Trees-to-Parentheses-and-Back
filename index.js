@@ -1,6 +1,6 @@
-class Tree {}
-class Leaf extends Tree {}
-class Branch extends Tree { constructor(left,right) }
+// class Tree {}
+// class Leaf extends Tree {}
+// class Branch extends Tree { constructor(left,right) }
 
 let treeToParens = t => (t instanceof Leaf) ? '': '(' + treeToParens(t.left) + ')' + treeToParens(t.right);
 
