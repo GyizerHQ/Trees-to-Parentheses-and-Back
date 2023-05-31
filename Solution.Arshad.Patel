@@ -1,0 +1,130 @@
+ public class Construct_Binary_Tree_from_String {
+
+    /**
+      * Definition for a binary tree node.
+      * public class TreeNode {
+      *     int val;
+      *     TreeNode left;
+      *     TreeNode right;
+      *     TreeNode(int x) { val = x; }
+      * }
+      */
+    class Solution {
+
+        private int start = 0;
+
+        public TreeNode str2tree(String s) {
+            if (s == null || s.length() == 0) {
+                return null;
+            }
+
+            return str2treeHelper(s);
+        }
+
+        private TreeNode str2treeHelper(String s) {
+            if (start >= s.length()) {
+                return null;
+            }
+
+            // parse int
+            //
+            boolean neg = false;
+            if (s.charAt(start) == '-') {
+                neg = true;
+                start++;
+            }
+            int num = 0;
+            while (start < s.length() && Character.isDigit(s.charAt(start))) {
+                int digit = Character.getNumericValue(s.charAt(start));
+                num = num * 10 + digit;
+                start++;
+            }
+
+            if (neg) {
+                num = -num;
+            }
+
+            TreeNode root = new TreeNode(num);
+
+            if (start >= s.length()) {
+                return root;
+            }
+
+            // go to left child
+            //
+            if (start < s.length() && s.charAt(start) == '(') {
+                start++;
+                root.left = str2treeHelper(s);
+            }
+
+            if (start < s.length() && s.charAt(start) == ')') {
+                start++;
+                return root;
+            }
+
+            // go to the right child
+            //
+            if (start < s.length() && s.charAt(start) == '(') {
+                start++;
+                root.right = str2treeHelper(s);
+            }
+
+            if (start < s.length() && s.charAt(start) == ')') {
+                start++;
+                return root;
+            }
+
+            return root;
+        }
+    }
+}
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode str2tree(String s) {
+        return dfs(s);
+    }
+
+    private TreeNode dfs(String s) {
+        if ("".equals(s)) {
+            return null;
+        }
+        int p = s.indexOf("(");
+        if (p == -1) {
+            return new TreeNode(Integer.parseInt(s));
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(s.substring(0, p)));
+        int start = p;
+        int cnt = 0;
+        for (int i = p; i < s.length(); ++i) {
+            if (s.charAt(i) == '(') {
+                ++cnt;
+            } else if (s.charAt(i) == ')') {
+                --cnt;
+            }
+            if (cnt == 0) {
+                if (start == p) {
+                    root.left = dfs(s.substring(start + 1, i));
+                    start = i + 1;
+                } else {
+                    root.right = dfs(s.substring(start + 1, i));
+                }
+            }
+        }
+        return root;
+    }
+}
