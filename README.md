@@ -1,32 +1,70 @@
-**Binary trees** can be encoded as strings of balanced parentheses **(in fact, the two things are isomorphic)**.
+import java.util.Stack;
 
-Your task is to figure out such an encoding, and write the two functions which *convert* back and forth between the **binary trees** and **strings of parentheses**.
+class Tree {
+    // Base class for binary trees
+}
 
-Here's the definition of binary trees:
+class Leaf extends Tree {
+    // Represents a leaf node in the binary tree
+}
 
-```
-class Tree {}
-class Leaf extends Tree {}
-class Branch extends Tree { constructor(left,right) {} }
-```
+class Branch extends Tree {
+    Tree left;
+    Tree right;
 
-And here are the functions you need to define:
-```
-function treeToParens(Tree) => String 
-function parensToTree(String) => Tree 
-```
+    public Branch(Tree left, Tree right) {
+        this.left = left;
+        this.right = right;
+    }
+}
 
-The first function needs to return only strings of valid balanced parentheses `(like "()(())")`.
-The second needs to accept any string of **balanced parentheses**.
+public class BinaryTreeEncoding {
+    public static String treeToParens(Tree tree) {
+        if (tree instanceof Leaf) {
+            return "";
+        } else if (tree instanceof Branch) {
+            Branch branch = (Branch) tree;
+            return "(" + treeToParens(branch.left) + ")" + "(" + treeToParens(branch.right) + ")";
+        }
+        return "";
+    }
 
-Also, the functions need to be **inverses** of each other.
-In other words, they need to satisfy the following equations:
-```
-treeToParens(parensToTree(parens)) === parens
-parensToTree(treeToParens(tree)) === tree
-```
+    public static Tree parensToTree(String parens) {
+        int n = parens.length();
+        if (n == 0) {
+            return new Leaf();
+        }
 
-> Note: \
-    \
-    There is more than one possible answer to this puzzle! There are number of different ways to "encode" a tree as a string of parentheses. Any solution that follows the laws above will be accepted. \
-   
+        Stack<Tree> stack = new Stack<>();
+        Tree root = null;
+
+        for (int i = 0; i < n; i++) {
+            char ch = parens.charAt(i);
+            if (ch == '(') {
+                stack.push(root);
+            } else if (ch == ')') {
+                if (stack.isEmpty()) {
+                    return null; // Invalid string
+                }
+                root = stack.pop();
+            } else {
+                return null; // Invalid character
+            }
+        }
+
+        if (!stack.isEmpty()) {
+            return null; // Invalid string
+        }
+
+        return root;
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        Tree tree = new Branch(new Leaf(), new Branch(new Leaf(), new Leaf()));
+        String parens = treeToParens(tree);
+        System.out.println("Encoded: " + parens);
+        Tree decodedTree = parensToTree(parens);
+        System.out.println("Decoded: " + decodedTree);
+    }
+}**
